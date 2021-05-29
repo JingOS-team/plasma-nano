@@ -1,4 +1,6 @@
-Plasma Nano
+# Plasma Nano
+plasma-Nano is based on KDE/plasma-Nano [github](https://github.com/KDE/plasma-nano)
+
 ## Introduction
 A minimal plasma shell package intended for embedded devices
 
