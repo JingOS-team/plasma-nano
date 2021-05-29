@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright 2015 Marco Martin <mart@kde.org>                            *
+ *   Copyright 2021 Yang Guoxiang <yangguoxiang@jingos.com>                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as published by  *
@@ -28,7 +29,11 @@ namespace Client
 class PlasmaWindow;
 class PlasmaShell;
 class PlasmaShellSurface;
+class BlurManager;
+class Blur;
 class Surface;
+class Compositor;
+class Registry;
 }
 }
 
@@ -42,6 +47,9 @@ public:
     explicit FullScreenOverlay(QQuickWindow *parent = 0);
     ~FullScreenOverlay();
 
+
+    Q_SCRIPTABLE void setBlur(QRect rect, double radius = 0, double yRadius = 0);
+
 Q_SIGNALS:
     void activeChanged();
     void acceptsFocusChanged();
@@ -51,9 +59,14 @@ protected:
 
 private:
     void initWayland();
+    void setUpSurface();
     KWayland::Client::PlasmaShellSurface *m_plasmaShellSurface = nullptr;
     KWayland::Client::Surface *m_surface = nullptr;
     KWayland::Client::PlasmaShell *m_plasmaShellInterface = nullptr;
+    KWayland::Client::BlurManager *m_waylandBlurManager = nullptr;
+    KWayland::Client::Blur *m_blur = nullptr;
+    KWayland::Client::Compositor *m_compositor = nullptr;
+    KWayland::Client::Registry *m_registry = nullptr;
     bool m_acceptsFocus = true;
 };
 

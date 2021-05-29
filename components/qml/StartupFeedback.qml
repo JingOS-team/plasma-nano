@@ -38,6 +38,7 @@ Window {
     }
 
     function open(splashIcon, title, x, y, sourceIconSize, color) {
+        window.showFullScreen();
         iconParent.scale = sourceIconSize/iconParent.width;
         background.scale = 0;
         backgroundParent.x = -window.width/2 + x
@@ -60,20 +61,27 @@ Window {
     property alias state: background.state
     property alias icon: icon.source
 
+    Timer {
+        id: closeTimer
+        interval: 180
+        running: false
+        repeat: false
+        onTriggered: background.state = "closed"
+    }
+
     width: Screen.width
     height: Screen.height
     color: "transparent"
     onVisibleChanged: {
         if (!visible) {
-            background.state = "closed";
+            closeTimer.start()
         }
     }
     onActiveChanged: {
         if (!active) {
-            background.state = "closed";
+            closeTimer.start()
         }
     }
-
 
     Item {
         id: backgroundParent
@@ -118,7 +126,7 @@ Window {
                         visible: false
                     }
                     PropertyChanges {
-                        target: fill
+                        target: window
                         opacity: 0
                     }
                 },

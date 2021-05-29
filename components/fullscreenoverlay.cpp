@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright 2015 Marco Martin <mart@kde.org>                            *
+ *   Copyright 2021 Yang Guoxiang <yangguoxiang@jingos.com>                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as published by  *
@@ -24,12 +25,18 @@
 #include <QDebug>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QPainterPath>
+#include <QPolygon>
+
 #include <kwindowsystem.h>
 
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/registry.h>
 #include <KWayland/Client/surface.h>
+#include <KWayland/Client/blur.h>
+#include <KWayland/Client/region.h>
+#include <KWayland/Client/compositor.h>
 
 FullScreenOverlay::FullScreenOverlay(QQuickWindow *parent)
     : QQuickWindow(parent)
@@ -45,6 +52,39 @@ FullScreenOverlay::~FullScreenOverlay()
 {
 }
 
+void FullScreenOverlay::setBlur(QRect rect, double xRadius, double yRadius)
+{
+    if (!m_surface) {
+       setUpSurface();
+    }
+    if (m_blur && m_compositor) {
+        QPainterPath path;
+        path.addRoundedRect(QRectF(rect),xRadius, yRadius, Qt::AbsoluteSize);
+        QPolygon polygon= path.toFillPolygon().toPolygon();
+        m_blur->setRegion(m_compositor->createRegion(QRegion(polygon), nullptr));
+        m_blur->commit();
+    }
+    update();
+}
+
+void FullScreenOverlay::setUpSurface()
+{
+    if (m_surface) {
+        // already setup
+        return;
+    }
+
+    using namespace KWayland::Client;
+
+    m_surface = Surface::fromWindow(this);
+    if (!m_surface) {
+        return;
+    }
+    if (m_waylandBlurManager) {
+        m_blur = m_waylandBlurManager->createBlur(m_surface);
+    }
+}
+
 void FullScreenOverlay::initWayland()
 {
     if (!QGuiApplication::platformName().startsWith(QLatin1String("wayland"), Qt::CaseInsensitive)) {
@@ -55,24 +95,45 @@ void FullScreenOverlay::initWayland()
     if (!connection) {
         return;
     }
-    Registry *registry = new Registry(this);
-    registry->create(connection);
+    m_registry = new Registry(this);
+    m_registry->create(connection);
 
     m_surface = Surface::fromWindow(this);
     if (!m_surface) {
         return;
     }
-    connect(registry, &Registry::plasmaShellAnnounced, this,
-        [this, registry] (quint32 name, quint32 version) {
+    connect(m_registry, &Registry::plasmaShellAnnounced, this,
+        [this] (quint32 name, quint32 version) {
 
-            m_plasmaShellInterface = registry->createPlasmaShell(name, version, this);
+            m_plasmaShellInterface = m_registry->createPlasmaShell(name, version, this);
 
             m_plasmaShellSurface = m_plasmaShellInterface->createSurface(m_surface, this);
             m_plasmaShellSurface->setSkipTaskbar(true);
         }
     );
 
-    registry->setup();
+    connect(m_registry, &Registry::blurAnnounced, this,
+        [this] (quint32 name, quint32 version) {
+            m_waylandBlurManager = m_registry->createBlurManager(name, version, this);
+
+            connect(m_waylandBlurManager, &KWayland::Client::BlurManager::removed, this, [this]() {
+                m_waylandBlurManager->deleteLater();
+                m_blur->deleteLater();
+            });
+
+            if (m_waylandBlurManager) {
+                m_blur = m_waylandBlurManager->createBlur(m_surface);
+            }
+        }
+    );
+
+    connect(m_registry, &Registry::compositorAnnounced, this,
+        [this](quint32 name, quint32 version) {
+            m_compositor = m_registry->createCompositor(name, version, this);
+        }
+    );
+
+    m_registry->setup();
     connection->roundtrip();
     //HACK: why the first time is shown fullscreen won't work?
     showFullScreen();
@@ -104,6 +165,8 @@ bool FullScreenOverlay::event(QEvent *e)
         if (m_plasmaShellSurface) {
             m_plasmaShellSurface->setSkipTaskbar(true);
         }
+    } else if (e->type() == QEvent::Hide) {
+        m_surface = nullptr;
     }
 
     return QQuickWindow::event(e);
