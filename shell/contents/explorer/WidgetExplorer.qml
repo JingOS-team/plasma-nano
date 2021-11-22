@@ -1,6 +1,6 @@
 /*
  *   Copyright 2011 Marco Martin <mart@kde.org>
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ *   Copyright (C) 2021 Dexiang Meng <dexiang.meng@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -31,6 +31,7 @@ import QtQuick.Window 2.1
 
 
 import org.kde.plasma.private.shell 2.0
+import jingos.display 1.0
 
 Controls.Drawer {
     id: root
@@ -125,7 +126,7 @@ Controls.Drawer {
                     orientation: root.horizontal ? ListView.Horizontal : ListView.Vertical
                     topMargin: root.horizontal ? 0 : root.topPanelHeight
                     delegate: Kirigami.BasicListItem {
-                        height: model.separator ? 1 : implicitHeight
+                        height: model.separator ? JDisplay.dp(1) : implicitHeight
                         width: root.horizontal ? implicitWidth : parent.width
                         text: model.separator ? "" : model.display
                         separatorVisible: false

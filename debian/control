@@ -1,0 +1,19 @@
+Source: plasma-nano
+Section: kde
+Priority: optional
+Maintainer: Harald Sitter <sitter@kde.org>
+Build-Depends: cmake,
+               debhelper (>= 9),
+               extra-cmake-modules,
+               libkf5plasma-dev,
+               libkf5wayland-dev,
+               libkf5windowsystem-dev,
+               pkg-kde-tools (>= 0.9),
+               qtdeclarative5-dev
+Standards-Version: 3.9.6
+
+Package: plasma-nano
+Architecture: any
+Depends: plasma-workspace, ${misc:Depends}, ${shlibs:Depends}
+Description: Plasma shell for embedded devices
+ A minimal plasma shell package intended for embedded devices

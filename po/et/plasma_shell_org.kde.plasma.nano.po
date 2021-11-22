@@ -1,0 +1,43 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the plasma-nano package.
+#
+# Marek Laane <qiilaq69@gmail.com>, 2019.
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-nano\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-01-30 03:12+0100\n"
+"PO-Revision-Date: 2020-09-28 13:49+0200\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
+"Language-Team: Estonian <>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 20.08.1\n"
+
+#: contents/configuration/ConfigurationContainmentAppearance.qml:61
+msgid "Layout cannot be changed while widgets are locked"
+msgstr "Paigutust ei saa muuta, kui vidinad on lukustatud"
+
+#: contents/configuration/ConfigurationContainmentAppearance.qml:72
+msgid "Wallpaper Type:"
+msgstr "Taustapildi tüüp:"
+
+#: contents/configuration/ContainmentConfiguration.qml:48
+msgid "Wallpaper"
+msgstr "Taustapilt"
+
+#: contents/configuration/ContainmentConfiguration.qml:97
+msgid "Customize..."
+msgstr ""
+
+#: contents/configuration/GHNSButton.qml:7
+msgid "Download..."
+msgstr ""
+
+#: contents/explorer/WidgetExplorer.qml:157
+msgid "Widgets"
+msgstr "Vidinad"

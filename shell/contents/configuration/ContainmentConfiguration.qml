@@ -1,6 +1,5 @@
 /*
  *  Copyright 2013 Marco Martin <mart@kde.org>
- *  Copyright 2021 Wang Rui <wangrui@jingos.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,8 +34,8 @@ AppletConfiguration {
     isContainment: true
 
     internalDialog.visible: false
-    internalDialog.width: Math.min(root.height - units.gridUnit * 2, Math.max(internalDialog.implicitWidth, units.gridUnit * 45))
-    internalDialog.height: Math.min(root.width, Math.max(internalDialog.implicitHeight, units.gridUnit * 29))
+    internalDialog.width: root.width < root.height ? root.width : Math.min(root.width, Math.max(internalDialog.implicitWidth, units.gridUnit * 45))
+    internalDialog.height: Math.min(root.height, Math.max(internalDialog.implicitHeight, units.gridUnit * 29))
 
     readonly property bool horizontal: root.width > root.height
 
@@ -57,6 +56,8 @@ AppletConfiguration {
         id: imageWallpaperDrawer
         edge: root.horizontal ? Qt.LeftEdge : Qt.BottomEdge
         visible: true
+        dragMargin: 0
+
         onClosed: {
             if (!root.internalDialog.visible) {
                 configDialog.close()
@@ -92,13 +93,15 @@ AppletConfiguration {
                 rightPadding: units.gridUnit
                 bottomPadding: units.gridUnit
 
-                contentItem: Controls.Button {
-                    icon.name: "configure"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "More Wallpapers...")
-                    onClicked: {
-                        print(wallpapersView.currentIndex)
-                        internalDialog.visible = true;
-                        imageWallpaperDrawer.close()
+                contentItem: ColumnLayout {
+                    Controls.Button {
+                        icon.name: "configure"
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Customize...")
+                        onClicked: {
+                            print(wallpapersView.currentIndex)
+                            internalDialog.visible = true;
+                            imageWallpaperDrawer.close()
+                        }
                     }
                 }
                 background: Rectangle {

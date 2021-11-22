@@ -1,5 +1,6 @@
 /*
  *   Copyright 2015 Marco Martin <notmart@gmail.com>
+ *   Copyright (C) 2021 Dexiang Meng <dexiang.meng@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -27,9 +28,11 @@ import org.kde.kirigami 2.13 as Kirigami
 
 import org.kde.plasma.private.nanoshell 2.0 as NanoShell
 
+import jingos.display 1.0
+
 pragma Singleton
 
-Window {
+NanoShell.SplashWindow {
     id: window
 
     property alias backgroundColor: background.color
@@ -38,12 +41,20 @@ Window {
     }
 
     function open(splashIcon, title, x, y, sourceIconSize, color) {
+        console.log(" ------ splashIcon : ",splashIcon )
+        console.log(" ------ title : ",title )
+        console.log(" ------ x : ",x )
+        console.log(" ------ y : ",y )
+        console.log(" ------ sourceIconSize : ",sourceIconSize )
+        console.log(" ------ color : ",color )
+        console.log(" ------ before background.state : ",background.state )
+
         window.showFullScreen();
         iconParent.scale = sourceIconSize/iconParent.width;
         background.scale = 0;
         backgroundParent.x = -window.width/2 + x
         backgroundParent.y = -window.height/2 + y
-        window.title = title;
+        window.title = title + " JSplash";
         icon.source = splashIcon;
         colorGenerator.source = splashIcon;
 
@@ -56,6 +67,10 @@ Window {
         }
 
         background.state = "open";
+        
+        console.log(" ------ after background.state : ",background.state )
+        console.log(" ------ window.visible : ", window.visible )
+
     }
 
     property alias state: background.state
@@ -101,9 +116,9 @@ Window {
             }
             DropShadow {
                 anchors.fill: icon
-                horizontalOffset: 0
-                verticalOffset: 0
-                radius: 8.0
+                horizontalOffset: JDisplay.dp(0)
+                verticalOffset: JDisplay.dp(0)
+                radius: JDisplay.dp(8.0)
                 samples: 17
                 color: "#80000000"
                 source: icon
@@ -167,14 +182,14 @@ Window {
                             XAnimator {
                                 target: backgroundParent
                                 from: backgroundParent.x
-                                to: 0
+                                to: JDisplay.dp(0)
                                 duration: units.longDuration
                                 easing.type: Easing.InOutQuad
                             }
                             YAnimator {
                                 target: backgroundParent
                                 from: backgroundParent.y
-                                to: 0
+                                to: JDisplay.dp(0)
                                 duration: units.longDuration
                                 easing.type: Easing.InOutQuad
                             }

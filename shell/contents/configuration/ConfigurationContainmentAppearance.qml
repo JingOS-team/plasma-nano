@@ -1,6 +1,5 @@
 /*
  *  Copyright 2013 Marco Martin <mart@kde.org>
- *  Copyright 2021 Wang Rui <wangrui@jingos.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,8 +21,6 @@ import org.kde.plasma.configuration 2.0
 import QtQuick.Controls 2.3 as QtControls
 import QtQuick.Layouts 1.1
 
-import org.kde.kconfig 1.0 // for KAuthorized
-import org.kde.plasma.private.shell 2.0 as ShellPrivate // for WallpaperPlugin
 import org.kde.kirigami 2.5 as Kirigami
 
 ColumnLayout {
@@ -87,18 +84,7 @@ ColumnLayout {
                     root.configurationChanged()
                 }
             }
-            /* //need mobile friendly ghns
-            QtControls.Button {
-                icon.name: "get-hot-new-stuff"
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Get New Plugins...")
-                visible: KAuthorized.authorize("ghns")
-                onClicked: wallpaperPlugin.getNewWallpaperPlugin(this)
-                Layout.preferredHeight: wallpaperComboBox.height
-
-                ShellPrivate.WallpaperPlugin {
-                    id: wallpaperPlugin
-                }
-            }*/
+            // TODO Add "Get new plugins.." button when KNS is mobile friendly
         }
     }
 

@@ -3,6 +3,7 @@ project(nanoshellprivate)
 set(nanoshellprivate_SRCS
     nanoshellprivateplugin.cpp
     fullscreenoverlay.cpp
+    splashwindow.cpp
     )
 
 add_library(plasmananoshellprivateplugin SHARED ${nanoshellprivate_SRCS})

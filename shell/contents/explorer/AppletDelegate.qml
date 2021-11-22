@@ -1,6 +1,6 @@
 /*
  *   Copyright 2011 Marco Martin <mart@kde.org>
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
+ *   Copyright (C) 2021 Dexiang Meng <dexiang.meng@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -27,6 +27,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.draganddrop 2.0
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0 as DragDrop
+import jingos.display 1.0
 
 Item {
     id: delegate
@@ -137,7 +138,7 @@ Item {
             elide: Text.ElideRight
             wrapMode: Text.WordWrap
             maximumLineCount: 2
-            lineHeight: 0.95
+            lineHeight: JDisplay.dp(0.95)
             horizontalAlignment: Text.AlignHCenter
         }
         PlasmaComponents.Label {

@@ -1,7 +1,6 @@
 /*   vim:set foldmethod=marker:
  *
  *   Copyright (C) 2013 Ivan Cukic <ivan.cukic(at)kde.org>
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2,

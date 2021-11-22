@@ -3,7 +3,7 @@ project(plasma-nano)
 # minimal requirements
 cmake_minimum_required (VERSION 2.8.12 FATAL_ERROR)
 set (QT_MIN_VERSION "5.15.0")
-set(KF5_MIN_VERSION "5.74")
+set(KF5_MIN_VERSION "5.78")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -38,3 +38,6 @@ plasma_install_package(shell org.kde.plasma.nano shells)
 plasma_install_package(desktoptoolbox org.kde.plasma.nano.desktoptoolbox packages package)
 
 add_subdirectory(components)
+
+find_package(KF5I18n CONFIG REQUIRED)
+ki18n_install(po)

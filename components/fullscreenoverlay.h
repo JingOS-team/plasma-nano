@@ -1,6 +1,5 @@
 /***************************************************************************
  *   Copyright 2015 Marco Martin <mart@kde.org>                            *
- *   Copyright 2021 Yang Guoxiang <yangguoxiang@jingos.com>                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as published by  *
@@ -49,6 +48,8 @@ public:
 
 
     Q_SCRIPTABLE void setBlur(QRect rect, double radius = 0, double yRadius = 0);
+
+    Q_SCRIPTABLE bool setWindowType(int type);
 
 Q_SIGNALS:
     void activeChanged();

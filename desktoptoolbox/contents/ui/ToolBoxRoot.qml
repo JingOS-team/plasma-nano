@@ -2,7 +2,6 @@
  *   Copyright 2011 Sebastian Kügler <sebas@kde.org>
  *   Copyright 2019 Marco Martin <mart@kde.org>
  *   Copyright 2015 Kai Uwe Broulik <kde@privat.broulik.de>
- *   Copyright 2021 Wang Rui <wangrui@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as

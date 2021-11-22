@@ -1,6 +1,5 @@
 /***************************************************************************
  *   Copyright 2015 Marco Martin <mart@kde.org>                            *
- *   Copyright 2021 Yang Guoxiang <yangguoxiang@jingos.com>                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as published by  *
@@ -57,6 +56,12 @@ void FullScreenOverlay::setBlur(QRect rect, double xRadius, double yRadius)
     if (!m_surface) {
        setUpSurface();
     }
+
+    if(qEnvironmentVariableIsSet("QT_SCALE_FACTOR")){
+        qreal scale = qgetenv("QT_SCALE_FACTOR").toFloat();
+        rect = QRect(rect.x() * scale, rect.y() * scale, rect.width() * scale, rect.height() * scale);
+    }
+
     if (m_blur && m_compositor) {
         QPainterPath path;
         path.addRoundedRect(QRectF(rect),xRadius, yRadius, Qt::AbsoluteSize);
@@ -65,6 +70,17 @@ void FullScreenOverlay::setBlur(QRect rect, double xRadius, double yRadius)
         m_blur->commit();
     }
     update();
+}
+
+bool FullScreenOverlay::setWindowType(int type)
+{
+    if (m_plasmaShellSurface) {
+        qDebug() << Q_FUNC_INFO << __LINE__ << "window type:" << type;
+        m_plasmaShellSurface->setWindowType((KWayland::Client::PlasmaShellSurface::WindowType)type);
+        return true;
+    }
+    qWarning() << Q_FUNC_INFO << __LINE__  << "window type:" << type;
+    return false;
 }
 
 void FullScreenOverlay::setUpSurface()
@@ -80,6 +96,10 @@ void FullScreenOverlay::setUpSurface()
     if (!m_surface) {
         return;
     }
+
+    m_plasmaShellSurface = m_plasmaShellInterface->createSurface(m_surface, this);
+    m_plasmaShellSurface->setWindowType(PlasmaShellSurface::WindowType::TYPE_STATUS_BAR_PANEL);
+
     if (m_waylandBlurManager) {
         m_blur = m_waylandBlurManager->createBlur(m_surface);
     }
@@ -109,6 +129,7 @@ void FullScreenOverlay::initWayland()
 
             m_plasmaShellSurface = m_plasmaShellInterface->createSurface(m_surface, this);
             m_plasmaShellSurface->setSkipTaskbar(true);
+            m_plasmaShellSurface->setWindowType(PlasmaShellSurface::WindowType::TYPE_STATUS_BAR_PANEL);
         }
     );
 
@@ -173,4 +194,3 @@ bool FullScreenOverlay::event(QEvent *e)
 }
 
 #include "fullscreenoverlay.moc"
-

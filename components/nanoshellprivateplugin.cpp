@@ -22,6 +22,7 @@
 
 #include "nanoshellprivateplugin.h"
 #include "fullscreenoverlay.h"
+#include "splashwindow.h"
 
 #include <QtQml>
 
@@ -31,4 +32,5 @@ void PlasmaMiniShellPrivatePlugin::registerTypes(const char *uri)
     Q_ASSERT(uri == QLatin1String("org.kde.plasma.private.nanoshell"));
 
     qmlRegisterType<FullScreenOverlay>(uri, 2, 0, "FullScreenOverlay");
+    qmlRegisterType<SplashWindow>(uri, 2, 0, "SplashWindow");
 }

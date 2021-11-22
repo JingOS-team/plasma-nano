@@ -1,6 +1,6 @@
 /*
  *  Copyright 2019 Marco Martin <mart@kde.org>
- *  Copyright 2021 Wang Rui <wangrui@jingos.com>
+ *  Copyright (C) 2021 Dexiang Meng <dexiang.meng@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -26,6 +26,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
+import jingos.display 1.0
 
 PlasmaCore.FrameSvgItem {
     id: root
@@ -39,7 +40,7 @@ PlasmaCore.FrameSvgItem {
         }
     }
     transform: Translate {
-        y: plasmoid.editMode ? 0 : root.height
+        y: plasmoid.editMode ? JDisplay.dp(0) : root.height
         Behavior on y {
             NumberAnimation {
                 duration: units.longDuration

@@ -1,5 +1,6 @@
 /*
  *  Copyright 2013 Marco Martin <mart@kde.org>
+ *  Copyright (C) 2021 Dexiang Meng <dexiang.meng@jingos.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import jingos.display 1.0
 
 Item {
     id: main
@@ -27,7 +29,7 @@ Item {
     Layout.minimumWidth: {
         switch (plasmoid.formFactor) {
         case PlasmaCore.Types.Vertical:
-            return 0;
+            return JDisplay.dp(0);
         case PlasmaCore.Types.Horizontal:
             return height;
         default:
@@ -40,7 +42,7 @@ Item {
         case PlasmaCore.Types.Vertical:
             return width;
         case PlasmaCore.Types.Horizontal:
-            return 0;
+            return JDisplay.dp(0);
         default:
             return units.gridUnit * 3;
         }

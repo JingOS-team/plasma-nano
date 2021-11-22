@@ -1,6 +1,6 @@
 /*
  *  Copyright 2013 Marco Martin <mart@kde.org>
- *  Copyright 2021 Wang Rui <wangrui@jingos.com>
+ *  Copyright (C) 2021 Dexiang Meng <dexiang.meng@jingos.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,23 +25,24 @@ import QtQuick.Window 2.2
 import org.kde.kirigami 2.5 as Kirigami
 import org.kde.plasma.core 2.1 as PlasmaCore
 import org.kde.plasma.configuration 2.0
+import jingos.display 1.0
 
 
 //TODO: all of this will be done with desktop components
 Rectangle {
     id: root
-    Layout.minimumWidth:  plasmoid.availableScreenRect.width
-    Layout.minimumHeight: plasmoid.availableScreenRect.height
+   // Layout.minimumWidth:  plasmoid.availableScreenRect.width
+   // Layout.minimumHeight: plasmoid.availableScreenRect.height
     
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    color: Qt.rgba(0, 0, 0, 0.6 * dialog.position)
+    color: "transparent"
 
 //BEGIN properties
     property bool isContainment: false
-    property alias internalDialog: dialog
+    property alias internalDialog: dialogContents
 //END properties
 
 //BEGIN model
@@ -120,31 +121,24 @@ Rectangle {
 //         root.width = dialogRootItem.implicitWidth
 //         root.height = dialogRootItem.implicitHeight
     }
+    onVisibleChanged: {
+        if (visible) {
+            dialogContents.visible = true;
+        }
+    }
 //END connections
 
 //BEGIN UI components
 
-    QtControls.Drawer {
-        id: dialog
+    Rectangle {
+        id: dialogContents
         visible: true
-        edge: Qt.BottomEdge
-        onClosed: configDialog.close()
-        x: parent.width/2 - width/2
+        anchors.fill: parent
+        color: Kirigami.Theme.backgroundColor
 
-        opacity: position
-        width: Math.min(Math.max(units.gridUnit * 35, dialogRootItem.implicitWidth + leftPadding + rightPadding), root.width)
-        height: Math.min(root.height - units.gridUnit * 2, dialogRootItem.implicitHeight + topPadding + bottomPadding + units.gridUnit, root.height)
-
-        leftPadding: background.margins.left
-        topPadding: background.margins.top
-        rightPadding: background.margins.right
-        bottomPadding: 0
-        background: PlasmaCore.FrameSvgItem {
-            imagePath: "widgets/background"
-            enabledBorders: PlasmaCore.FrameSvgItem.LeftBorder | PlasmaCore.FrameSvgItem.TopBorder | PlasmaCore.FrameSvgItem.RightBorder
-        }
-        contentItem: ColumnLayout {
+        ColumnLayout {
             id: dialogRootItem
+            anchors.fill: parent
 
             spacing: 0
             implicitWidth: scroll.implicitWidth
@@ -304,7 +298,7 @@ Rectangle {
             Rectangle {
                 id: separator
                 Layout.fillWidth: true
-                Layout.preferredHeight: 1
+                Layout.preferredHeight: JDisplay.dp(1)
                 color: Kirigami.Theme.highlightColor
                 visible: categoriesScroll.visible
                 Behavior on color {
